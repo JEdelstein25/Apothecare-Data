@@ -1,0 +1,30 @@
+function singleCustomer() {
+  var spreadsheetID = "1AeDlbeIgWm90ye7269qcjDNaXYLbTieZBnRVTPbS57o"
+  var sheet = SpreadsheetApp.openById(spreadsheetID).getActiveSheet()
+  var data = sheet.getDataRange().getValues()
+  var newData = [];
+  for (var i in data) {
+    var row = data[i]
+    let name = row[0]
+    var duplicate = false
+    for (var j in newData) {
+      if (name == newData[j][0]) {
+        newData[j][2]+=row[2]
+        newData[j][3]++
+        duplicate = true
+        break
+      }
+    }
+    if (!duplicate) {
+      row[3] = 1
+      newData.push(row)
+    }
+  }
+  newData[0][3] = "# of Purchases"
+  for (var i in newData) {
+    newData[i][4] = Number((newData[i][2])/(newData[i][3])).toFixed(2)
+  }
+  newData[0][4] = "Avg. Sale"
+  sheet.clearContents()
+  sheet.getRange(1, 1, newData.length, newData[1].length).setValues(newData)
+}
