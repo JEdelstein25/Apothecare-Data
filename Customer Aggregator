@@ -1,3 +1,4 @@
+// Takes a list of sales data and aggregates all sales by a certain customer into one row
 function singleCustomer() {
   var spreadsheetID = "1AeDlbeIgWm90ye7269qcjDNaXYLbTieZBnRVTPbS57o"
   var sheet = SpreadsheetApp.openById(spreadsheetID).getActiveSheet()
@@ -20,10 +21,12 @@ function singleCustomer() {
       newData.push(row)
     }
   }
+  // counts # of purchases made by each customer
   newData[0][3] = "# of Purchases"
   for (var i in newData) {
     newData[i][4] = Number((newData[i][2])/(newData[i][3])).toFixed(2)
   }
+  // calculates the average purchase of each sale
   newData[0][4] = "Avg. Sale"
   sheet.clearContents()
   sheet.getRange(1, 1, newData.length, newData[1].length).setValues(newData)
